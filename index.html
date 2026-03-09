@@ -3,306 +3,296 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromptGenie - Precision Prompt Engineering</title>
-  <meta name="description" content="Transform basic ideas into mathematically optimized AI prompts using the TACNS framework. Get better results from ChatGPT, Claude, and Gemini.">
+  <title>PromptGenie V2.5 - Master Your AI Prompts</title>
+  <meta name="description" content="Transform basic prompts into powerful AI instructions. Precision prompt engineering using TACNS framework for maximum AI performance.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧞</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --genie-purple: #7c3aed;
-      --genie-purple-dark: #5b21b6;
-      --genie-purple-light: #a78bfa;
-      --genie-gold: #fbbf24;
-      --genie-gold-light: #fcd34d;
-      --genie-dark: #1e1b4b;
-      --genie-night: #0f0d1a;
-      --white: #ffffff;
-      --gray-100: #f3f4f6;
-      --gray-200: #e5e7eb;
-      --gray-600: #4b5563;
-      --gray-800: #1f2937;
+      --gold: #d4a853;
+      --gold-light: #f0d78c;
+      --gold-dark: #b8923f;
+      --purple-deep: #1a1625;
+      --purple-mid: #2d2640;
+      --purple-light: #4a3f6b;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--gray-800); background: var(--white); }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-    
-    /* Header */
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(15, 13, 26, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(251, 191, 36, 0.2); }
-    .header-content { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1100px; margin: 0 auto; }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-icon { font-size: 36px; }
-    .logo-text { font-size: 24px; font-weight: 700; color: var(--white); }
-    .logo-text span { color: var(--genie-gold); }
-    nav { display: flex; gap: 32px; align-items: center; }
-    nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s; }
-    nav a:hover { color: var(--genie-gold); }
-    .btn { padding: 10px 24px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; }
-    .btn-primary { background: linear-gradient(135deg, var(--genie-gold), #f59e0b); color: var(--genie-dark); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4); }
-    .btn-outline { border: 2px solid var(--genie-gold); color: var(--genie-gold); background: transparent; }
-    .btn-outline:hover { background: var(--genie-gold); color: var(--genie-dark); }
-
-    /* Hero */
-    .hero { min-height: 100vh; background: linear-gradient(180deg, var(--genie-night) 0%, var(--genie-dark) 100%); position: relative; overflow: hidden; display: flex; align-items: center; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.3) 0%, transparent 60%); }
-    .hero::after { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' fill='%23fbbf24' fill-opacity='0.03'/%3E%3C/svg%3E"); }
-    .hero-content { position: relative; z-index: 1; text-align: center; padding: 120px 24px 80px; max-width: 800px; margin: 0 auto; }
-    .hero-badge { display: inline-block; background: rgba(124, 58, 237, 0.3); border: 1px solid var(--genie-purple); color: var(--genie-purple-light); padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 600; margin-bottom: 24px; }
-    .hero-title { font-size: clamp(40px, 7vw, 72px); font-weight: 800; color: var(--white); margin-bottom: 20px; line-height: 1.1; }
-    .hero-title span { background: linear-gradient(135deg, var(--genie-gold), #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-subtitle { font-size: 20px; color: rgba(255,255,255,0.75); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
-    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
-    .hero-stats { display: flex; justify-content: center; gap: 48px; }
-    .stat { text-align: center; }
-    .stat-value { font-size: 36px; font-weight: 700; color: var(--genie-gold); }
-    .stat-label { font-size: 14px; color: rgba(255,255,255,0.6); }
-
-    /* Demo Section */
-    .demo-section { padding: 80px 0; background: var(--gray-100); }
-    .demo-card { background: var(--white); border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden; max-width: 700px; margin: 0 auto; }
-    .demo-header { background: linear-gradient(135deg, var(--genie-purple), var(--genie-purple-dark)); color: var(--white); padding: 20px 32px; display: flex; align-items: center; gap: 12px; }
-    .demo-icon { font-size: 28px; }
-    .demo-title { font-size: 18px; font-weight: 600; }
-    .demo-content { padding: 32px; }
-    .form-group { margin-bottom: 20px; }
-    .form-label { display: block; font-weight: 600; color: var(--gray-800); margin-bottom: 8px; font-size: 14px; }
-    .form-input, .form-select { width: 100%; padding: 14px 18px; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 16px; transition: border-color 0.3s; }
-    .form-input:focus, .form-select:focus { outline: none; border-color: var(--genie-purple); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .optimize-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--genie-purple), var(--genie-purple-dark)); color: var(--white); font-size: 18px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .optimize-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4); }
-
-    /* Features */
-    .features { padding: 100px 0; }
-    .section-header { text-align: center; margin-bottom: 60px; }
-    .section-header h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: var(--gray-800); margin-bottom: 16px; }
-    .section-header p { font-size: 18px; color: var(--gray-600); max-width: 600px; margin: 0 auto; }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
-    .feature-card { padding: 32px; background: var(--white); border-radius: 20px; border: 1px solid var(--gray-200); transition: all 0.3s; }
-    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); border-color: var(--genie-purple-light); }
-    .feature-icon { width: 60px; height: 60px; background: linear-gradient(135deg, var(--genie-purple), var(--genie-purple-dark)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px; }
-    .feature-card h3 { font-size: 20px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px; }
-    .feature-card p { color: var(--gray-600); }
-
-    /* How It Works */
-    .how-it-works { padding: 100px 0; background: var(--gray-100); }
-    .steps { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-    .step { text-align: center; max-width: 300px; }
-    .step-number { width: 70px; height: 70px; background: linear-gradient(135deg, var(--genie-gold), #f59e0b); color: var(--genie-dark); font-size: 28px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
-    .step h3 { font-size: 22px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px; }
-    .step p { color: var(--gray-600); }
-    .step-connector { align-self: center; color: var(--genie-gold); font-size: 32px; }
-
-    /* Models */
-    .models { padding: 100px 0; }
-    .models-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
-    .model-card { padding: 24px; background: var(--white); border-radius: 16px; border: 2px solid var(--gray-200); text-align: center; transition: all 0.3s; }
-    .model-card:hover { border-color: var(--genie-purple); }
-    .model-icon { font-size: 40px; margin-bottom: 12px; }
-    .model-name { font-weight: 700; color: var(--gray-800); }
-
-    /* CTA */
-    .cta { padding: 100px 0; background: linear-gradient(180deg, var(--genie-dark), var(--genie-night)); text-align: center; }
-    .cta h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: var(--white); margin-bottom: 16px; }
-    .cta p { font-size: 18px; color: rgba(255,255,255,0.75); margin-bottom: 40px; }
-
-    /* Footer */
-    footer { background: var(--genie-night); padding: 32px 0; text-align: center; border-top: 1px solid rgba(251, 191, 36, 0.1); }
-    footer p { color: rgba(255,255,255,0.5); font-size: 14px; }
-
-    @media (max-width: 768px) {
-      .header-content { flex-direction: column; gap: 16px; }
-      .hero-stats { flex-direction: column; gap: 24px; }
-      .form-row { grid-template-columns: 1fr; }
-      .steps { flex-direction: column; align-items: center; }
-      .step-connector { transform: rotate(90deg); }
+    body { font-family: 'Outfit', sans-serif; }
+    .font-serif { font-family: 'Crimson Pro', serif; }
+    .gold-gradient {
+      background: linear-gradient(135deg, #d4a853 0%, #f0d78c 50%, #d4a853 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gold-bg-gradient {
+      background: linear-gradient(135deg, #d4a853 0%, #b8923f 100%);
+    }
+    .bg-magic {
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(212, 168, 83, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(74, 63, 107, 0.3) 0%, transparent 50%),
+        linear-gradient(180deg, #1a1625 0%, #2d2640 100%);
+    }
+    .stars {
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #d4a853, transparent),
+        radial-gradient(2px 2px at 40px 70px, #fff, transparent),
+        radial-gradient(1px 1px at 90px 40px, #d4a853, transparent),
+        radial-gradient(2px 2px at 160px 120px, #fff, transparent),
+        radial-gradient(1px 1px at 230px 80px, #d4a853, transparent),
+        radial-gradient(2px 2px at 300px 150px, #fff, transparent);
+      background-size: 350px 200px;
+      animation: twinkle 8s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .lamp-glow {
+      filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.5));
     }
   </style>
 </head>
-<body>
-  <header>
-    <div class="header-content">
-      <div class="logo">
-        <span class="logo-icon">🧞</span>
-        <span class="logo-text">Prompt<span>Genie</span></span>
+<body class="bg-magic text-white min-h-screen">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-purple-deep/90 backdrop-blur-md border-b border-purple-light/30">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-4xl">🧞</span>
+          <div>
+            <h1 class="text-2xl font-bold gold-gradient">PromptGenie</h1>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="#features" class="text-white/80 hover:text-[#d4a853] transition">Features</a>
+          <a href="#how-it-works" class="text-white/80 hover:text-[#d4a853] transition">How It Works</a>
+          <a href="#avatar" class="text-white/80 hover:text-[#d4a853] transition">The Avatar Framework</a>
+          <a href="https://promptgenie-v2.pages.dev/" class="gold-bg-gradient px-5 py-2 rounded-full font-semibold text-purple-deep hover:opacity-90 transition">Open App</a>
+        </nav>
       </div>
-      <nav>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="#models">AI Models</a>
-        <a href="https://promptgenie-v2.pages.dev/" class="btn btn-primary">Try Free</a>
-      </nav>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">🧞 V2.5 Engine Active</div>
-      <h1 class="hero-title">
-        Precision Prompt<br><span>Engineering</span>
-      </h1>
-      <p class="hero-subtitle">
-        Transform basic ideas into mathematically optimized, multi-layered AI instructions using the TACNS & Avatar frameworks. Get dramatically better results from any AI model.
+  <!-- Hero -->
+  <section class="relative min-h-screen flex items-center justify-center stars overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-purple-deep/50"></div>
+    
+    <!-- Magic Lamp -->
+    <div class="absolute bottom-20 left-1/2 -translate-x-1/2 lamp-glow opacity-30">
+      <svg width="400" height="400" viewBox="0 0 100 100">
+        <ellipse cx="50" cy="85" rx="30" ry="8" fill="#d4a853" opacity="0.3"/>
+        <path d="M35 85 L40 50 Q50 20 60 50 L65 85 Z" fill="url(#lampGrad)" opacity="0.8"/>
+        <defs>
+          <linearGradient id="lampGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#d4a853"/>
+            <stop offset="50%" stop-color="#f0d78c"/>
+            <stop offset="100%" stop-color="#d4a853"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="relative z-10 text-center px-4 pt-20">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-light/30 border border-[#d4a853]/30 mb-8">
+        <span>✨</span>
+        <span class="text-[#d4a853] font-medium">V2.5 Engine Active</span>
+        <span>✨</span>
+      </div>
+      
+      <h2 class="text-5xl md:text-7xl font-bold mb-6">
+        <span class="text-white">Wish for the</span><br>
+        <span class="gold-gradient font-serif">Perfect Prompt</span>
+      </h2>
+      
+      <p class="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto mb-10">
+        Transform basic ideas into mathematically optimized, multi-layered AI instructions. 
+        Get 10x better results from ChatGPT, Claude, and Gemini.
       </p>
-      <div class="hero-buttons">
-        <a href="https://promptgenie-v2.pages.dev/" class="btn btn-primary">Start Optimizing →</a>
-        <a href="#how-it-works" class="btn btn-outline">See How It Works</a>
+      
+      <div class="flex flex-col md:flex-row gap-4 justify-center mb-16">
+        <a href="https://promptgenie-v2.pages.dev/" class="gold-bg-gradient px-8 py-4 rounded-full font-bold text-xl text-purple-deep hover:scale-105 transition transform">
+          🧞 Grant My Wish
+        </a>
+        <a href="#how-it-works" class="px-8 py-4 rounded-full font-bold text-xl border-2 border-[#d4a853]/50 text-[#d4a853] hover:bg-[#d4a853]/10 transition">
+          See How It Works
+        </a>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-value">TACNS</div>
-          <div class="stat-label">Framework</div>
+
+      <!-- Stats -->
+      <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-[#d4a853]">10x</div>
+          <div class="text-white/60">Better Results</div>
         </div>
-        <div class="stat">
-          <div class="stat-value">5+</div>
-          <div class="stat-label">AI Models</div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-[#d4a853]">TACNS</div>
+          <div class="text-white/60">Framework</div>
         </div>
-        <div class="stat">
-          <div class="stat-value">10x</div>
-          <div class="stat-label">Better Results</div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-[#d4a853]">3+</div>
+          <div class="text-white/60">AI Models</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="demo-section">
-    <div class="container">
-      <div class="demo-card">
-        <div class="demo-header">
-          <span class="demo-icon">🧞</span>
-          <span class="demo-title">Try It Now - It's Free</span>
+  <!-- Problem/Solution -->
+  <section class="py-20 px-4 bg-purple-deep">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Problem -->
+        <div class="bg-red-900/20 border border-red-500/30 rounded-2xl p-8">
+          <div class="text-4xl mb-4">😕</div>
+          <h3 class="text-xl font-bold text-red-400 mb-4">The Problem</h3>
+          <ul class="space-y-3 text-white/70">
+            <li>✦ Basic prompts = basic results</li>
+            <li>✦ AI doesn't understand context</li>
+            <li>✦ Wasted tokens on unclear instructions</li>
+            <li>✦ Inconsistent output quality</li>
+          </ul>
         </div>
-        <div class="demo-content">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Target Audience (Avatar)</label>
-              <input type="text" class="form-input" placeholder="e.g. A skeptical CFO, Creative Writer" disabled>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Target AI Model</label>
-              <select class="form-select" disabled>
-                <option>GPT-4, Claude, Gemini & more</option>
-              </select>
-            </div>
+        
+        <!-- Solution -->
+        <div class="bg-[#d4a853]/10 border border-[#d4a853]/30 rounded-2xl p-8">
+          <div class="text-4xl mb-4">🧞</div>
+          <h3 class="text-xl font-bold text-[#d4a853] mb-4">The Genie Solution</h3>
+          <ul class="space-y-3 text-white/70">
+            <li>✦ Layered prompt architecture</li>
+            <li>✦ Avatar context framework</li>
+            <li>✦ Optimized for each AI model</li>
+            <li>✦ Mathematical precision</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-4">Grant Every Wish</h2>
+        <p class="text-xl text-white/60">Precision tools for prompt architects</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 hover:border-[#d4a853]/50 transition">
+          <div class="text-4xl mb-4">🎯</div>
+          <h3 class="text-xl font-bold mb-3 text-[#d4a853]">Avatar Targeting</h3>
+          <p class="text-white/70">Define your exact target audience. The AI adopts their perspective, language, and priorities for resonate results.</p>
+        </div>
+        
+        <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 hover:border-[#d4a853]/50 transition">
+          <div class="text-4xl mb-4">🏗️</div>
+          <h3 class="text-xl font-bold mb-3 text-[#d4a853]">TACNS Framework</h3>
+          <p class="text-white/70">Targeted Audience Contextual Nuanced Synthesis - our proprietary 4-layer prompt architecture.</p>
+        </div>
+        
+        <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 hover:border-[#d4a853]/50 transition">
+          <div class="text-4xl mb-4">🤖</div>
+          <h3 class="text-xl font-bold mb-3 text-[#d4a853]">Multi-Model Optimization</h3>
+          <p class="text-white/70">Prompts tuned for GPT-4, Claude 3, and Gemini. Each model has unique strengths - we optimize for all.</p>
+        </div>
+        
+        <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 hover:border-[#d4a853]/50 transition">
+          <div class="text-4xl mb-4">📐</div>
+          <h3 class="text-xl font-bold mb-3 text-[#d4a853]">Structured Output</h3>
+          <p class="text-white/70">Define exact formats, lengths, and structures. Get consistent, usable results every time.</p>
+        </div>
+        
+        <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 hover:border-[#d4a853]/50 transition">
+          <div class="text-4xl mb-4">🛡️</div>
+          <h3 class="text-xl font-bold mb-3 text-[#d4a853]">Guardrails Built In</h3>
+          <p class="text-white/70">Add constraints and limitations to prevent unwanted outputs, hallucinations, and off-topic responses.</p>
+        </div>
+        
+        <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 hover:border-[#d4a853]/50 transition">
+          <div class="text-4xl mb-4">💾</div>
+          <h3 class="text-xl font-bold mb-3 text-[#d4a853]">Prompt Library</h3>
+          <p class="text-white/70">Save and organize your best prompts. Build a personal library of optimized instructions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-20 px-4 bg-purple-deep">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
+        <p class="text-xl text-white/60">Three steps to prompt mastery</p>
+      </div>
+      
+      <div class="space-y-8">
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full gold-bg-gradient flex items-center justify-center text-purple-deep font-bold text-xl flex-shrink-0">1</div>
+          <div>
+            <h3 class="text-xl font-bold text-[#d4a853] mb-2">Define Your Avatar</h3>
+            <p class="text-white/70">Who are you talking to? A skeptical CFO? A creative writer? A busy executive? The Avatar shapes everything.</p>
           </div>
-          <div class="form-group">
-            <label class="form-label">Your Basic Prompt</label>
-            <input type="text" class="form-input" placeholder="Describe what you want the AI to do..." disabled>
+        </div>
+        
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full gold-bg-gradient flex items-center justify-center text-purple-deep font-bold text-xl flex-shrink-0">2</div>
+          <div>
+            <h3 class="text-xl font-bold text-[#d4a853] mb-2">State Your Intention</h3>
+            <p class="text-white/70">What do you want? Select your target AI model and primary objective. We optimize for your specific use case.</p>
           </div>
-          <button class="optimize-btn">
-            <span>🧞</span> Optimize My Prompt
-          </button>
+        </div>
+        
+        <div class="flex gap-6 items-start">
+          <div class="w-12 h-12 rounded-full gold-bg-gradient flex items-center justify-center text-purple-deep font-bold text-xl flex-shrink-0">3</div>
+          <div>
+            <h3 class="text-xl font-bold text-[#d4a853] mb-2">Make Your Wish</h3>
+            <p class="text-white/70">Enter your basic idea in plain English. Our engine transforms it into a mathematically optimized, multi-layered prompt.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-header">
-        <h2>Why PromptGenie?</h2>
-        <p>The difference between mediocre AI responses and extraordinary ones is the prompt. We make you a prompt architect.</p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <h3>Avatar Targeting</h3>
-          <p>Define your target audience. The AI responds differently to a skeptical CFO vs. an excited creative writer. We optimize for your specific reader.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🧮</div>
-          <h3>Mathematical Optimization</h3>
-          <p>Our TACNS framework applies mathematical precision to prompt structure, maximizing information density and response quality.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔄</div>
-          <h3>Multi-Layered Output</h3>
-          <p>Generate prompts with context, constraints, format specifications, and guardrails all baked in. One prompt, powerful results.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>Instant Optimization</h3>
-          <p>No more trial and error. Get production-ready prompts in seconds, not hours of refinement.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛡️</div>
-          <h3>Built-in Guardrails</h3>
-          <p>We automatically add safety constraints and ethical guidelines to prevent unwanted outputs.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Model-Specific Tuning</h3>
-          <p>Each AI model responds differently. We optimize prompts specifically for GPT-4, Claude, Gemini, or make them universal.</p>
+  <!-- Avatar Framework -->
+  <section id="avatar" class="py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-bold mb-8">The Avatar Framework</h2>
+      <p class="text-xl text-white/70 mb-12">
+        The secret to powerful prompts isn't better wording—it's better <span class="text-[#d4a853] font-semibold">context</span>.
+      </p>
+      
+      <div class="bg-purple-mid/50 rounded-2xl p-8 border border-purple-light/30 text-left">
+        <h3 class="text-2xl font-bold text-[#d4a853] mb-6 text-center">What is an Avatar?</h3>
+        <div class="space-y-4 text-white/80">
+          <p>An Avatar is your <strong>ideal target audience</strong>—the specific person you want the AI to become.</p>
+          <p>Instead of "write a blog post," you say:</p>
+          <blockquote class="border-l-4 border-[#d4a853] pl-4 my-6 text-white/60 italic">
+            "Write as a skeptical financial analyst with 20 years of Wall Street experience who values data over hype..."
+          </blockquote>
+          <p>The difference in output quality is <strong>night and day</strong>.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="how-it-works" id="how-it-works">
-    <div class="container">
-      <div class="section-header">
-        <h2>How It Works</h2>
-        <p>Three steps from basic idea to optimized prompt</p>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">1</div>
-          <h3>Define Your Audience</h3>
-          <p>Tell us who will read the AI's response - a CEO, developer, teacher, or customer. This shapes the entire prompt.</p>
-        </div>
-        <div class="step-connector">→</div>
-        <div class="step">
-          <div class="step-number">2</div>
-          <h3>Share Your Idea</h3>
-          <p>Type your basic prompt in plain English. "Write about climate change" becomes a structured masterpiece.</p>
-        </div>
-        <div class="step-connector">→</div>
-        <div class="step">
-          <div class="step-number">3</div>
-          <h3>Get Optimized Result</h3>
-          <p>Our engine transforms your prompt using TACNS framework. Copy the optimized version and use it with any AI.</p>
-        </div>
-      </div>
+  <!-- CTA -->
+  <section class="py-20 px-4 bg-gradient-to-b from-purple-deep to-purple-mid">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="text-6xl mb-6">🧞</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Make a Wish?</h2>
+      <p class="text-xl text-white/70 mb-10">
+        Join prompt engineers who have cracked the code on AI interactions.
+      </p>
+      <a href="https://promptgenie-v2.pages.dev/" class="inline-block gold-bg-gradient px-10 py-4 rounded-full font-bold text-xl text-purple-deep hover:scale-105 transition transform">
+        🧞 Open PromptGenie Free
+      </a>
     </div>
   </section>
 
-  <section class="models" id="models">
-    <div class="container">
-      <div class="section-header">
-        <h2>Works With All Major AI</h2>
-        <p>Optimized prompts for every model</p>
-      </div>
-      <div class="models-grid">
-        <div class="model-card">
-          <div class="model-icon">🤖</div>
-          <div class="model-name">ChatGPT</div>
-        </div>
-        <div class="model-card">
-          <div class="model-icon">🧠</div>
-          <div class="model-name">Claude</div>
-        </div>
-        <div class="model-card">
-          <div class="model-icon">✨</div>
-          <div class="model-name">Gemini</div>
-        </div>
-        <div class="model-card">
-          <div class="model-icon">🌐</div>
-          <div class="model-name">Universal</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta">
-    <div class="container">
-      <h2>Ready to Optimize?</h2>
-      <p>Join thousands of prompt engineers getting better AI results.</p>
-      <a href="https://promptgenie-v2.pages.dev/" class="btn btn-primary" style="font-size: 20px; padding: 16px 40px;">Start Free →</a>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p>© 2026 PromptGenie. Powered by TACNS Logic & Gemini 3 Pro.</p>
+  <!-- Footer -->
+  <footer class="py-8 px-4 border-t border-purple-light/30">
+    <div class="max-w-6xl mx-auto text-center text-white/40">
+      <p>© 2026 PromptGenie V2.5 • Powered by TACNS Logic & Gemini 3 Pro</p>
     </div>
   </footer>
 </body>
