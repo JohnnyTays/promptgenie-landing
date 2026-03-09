@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptGenie - Precision Prompt Engineering</title>
+  <meta name="description" content="Transform basic ideas into mathematically optimized AI prompts using the TACNS framework. Get better results from ChatGPT, Claude, and Gemini.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧞</text></svg>">
+  <style>
+    :root {
+      --genie-purple: #7c3aed;
+      --genie-purple-dark: #5b21b6;
+      --genie-purple-light: #a78bfa;
+      --genie-gold: #fbbf24;
+      --genie-gold-light: #fcd34d;
+      --genie-dark: #1e1b4b;
+      --genie-night: #0f0d1a;
+      --white: #ffffff;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-800: #1f2937;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--gray-800); background: var(--white); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Header */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(15, 13, 26, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(251, 191, 36, 0.2); }
+    .header-content { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1100px; margin: 0 auto; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { font-size: 36px; }
+    .logo-text { font-size: 24px; font-weight: 700; color: var(--white); }
+    .logo-text span { color: var(--genie-gold); }
+    nav { display: flex; gap: 32px; align-items: center; }
+    nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+    nav a:hover { color: var(--genie-gold); }
+    .btn { padding: 10px 24px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; }
+    .btn-primary { background: linear-gradient(135deg, var(--genie-gold), #f59e0b); color: var(--genie-dark); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4); }
+    .btn-outline { border: 2px solid var(--genie-gold); color: var(--genie-gold); background: transparent; }
+    .btn-outline:hover { background: var(--genie-gold); color: var(--genie-dark); }
+
+    /* Hero */
+    .hero { min-height: 100vh; background: linear-gradient(180deg, var(--genie-night) 0%, var(--genie-dark) 100%); position: relative; overflow: hidden; display: flex; align-items: center; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.3) 0%, transparent 60%); }
+    .hero::after { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' fill='%23fbbf24' fill-opacity='0.03'/%3E%3C/svg%3E"); }
+    .hero-content { position: relative; z-index: 1; text-align: center; padding: 120px 24px 80px; max-width: 800px; margin: 0 auto; }
+    .hero-badge { display: inline-block; background: rgba(124, 58, 237, 0.3); border: 1px solid var(--genie-purple); color: var(--genie-purple-light); padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 600; margin-bottom: 24px; }
+    .hero-title { font-size: clamp(40px, 7vw, 72px); font-weight: 800; color: var(--white); margin-bottom: 20px; line-height: 1.1; }
+    .hero-title span { background: linear-gradient(135deg, var(--genie-gold), #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: 20px; color: rgba(255,255,255,0.75); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-stats { display: flex; justify-content: center; gap: 48px; }
+    .stat { text-align: center; }
+    .stat-value { font-size: 36px; font-weight: 700; color: var(--genie-gold); }
+    .stat-label { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+    /* Demo Section */
+    .demo-section { padding: 80px 0; background: var(--gray-100); }
+    .demo-card { background: var(--white); border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden; max-width: 700px; margin: 0 auto; }
+    .demo-header { background: linear-gradient(135deg, var(--genie-purple), var(--genie-purple-dark)); color: var(--white); padding: 20px 32px; display: flex; align-items: center; gap: 12px; }
+    .demo-icon { font-size: 28px; }
+    .demo-title { font-size: 18px; font-weight: 600; }
+    .demo-content { padding: 32px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-weight: 600; color: var(--gray-800); margin-bottom: 8px; font-size: 14px; }
+    .form-input, .form-select { width: 100%; padding: 14px 18px; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 16px; transition: border-color 0.3s; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--genie-purple); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .optimize-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--genie-purple), var(--genie-purple-dark)); color: var(--white); font-size: 18px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .optimize-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4); }
+
+    /* Features */
+    .features { padding: 100px 0; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-header h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: var(--gray-800); margin-bottom: 16px; }
+    .section-header p { font-size: 18px; color: var(--gray-600); max-width: 600px; margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
+    .feature-card { padding: 32px; background: var(--white); border-radius: 20px; border: 1px solid var(--gray-200); transition: all 0.3s; }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); border-color: var(--genie-purple-light); }
+    .feature-icon { width: 60px; height: 60px; background: linear-gradient(135deg, var(--genie-purple), var(--genie-purple-dark)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px; }
+    .feature-card h3 { font-size: 20px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px; }
+    .feature-card p { color: var(--gray-600); }
+
+    /* How It Works */
+    .how-it-works { padding: 100px 0; background: var(--gray-100); }
+    .steps { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+    .step { text-align: center; max-width: 300px; }
+    .step-number { width: 70px; height: 70px; background: linear-gradient(135deg, var(--genie-gold), #f59e0b); color: var(--genie-dark); font-size: 28px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+    .step h3 { font-size: 22px; font-weight: 700; color: var(--gray-800); margin-bottom: 12px; }
+    .step p { color: var(--gray-600); }
+    .step-connector { align-self: center; color: var(--genie-gold); font-size: 32px; }
+
+    /* Models */
+    .models { padding: 100px 0; }
+    .models-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+    .model-card { padding: 24px; background: var(--white); border-radius: 16px; border: 2px solid var(--gray-200); text-align: center; transition: all 0.3s; }
+    .model-card:hover { border-color: var(--genie-purple); }
+    .model-icon { font-size: 40px; margin-bottom: 12px; }
+    .model-name { font-weight: 700; color: var(--gray-800); }
+
+    /* CTA */
+    .cta { padding: 100px 0; background: linear-gradient(180deg, var(--genie-dark), var(--genie-night)); text-align: center; }
+    .cta h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: var(--white); margin-bottom: 16px; }
+    .cta p { font-size: 18px; color: rgba(255,255,255,0.75); margin-bottom: 40px; }
+
+    /* Footer */
+    footer { background: var(--genie-night); padding: 32px 0; text-align: center; border-top: 1px solid rgba(251, 191, 36, 0.1); }
+    footer p { color: rgba(255,255,255,0.5); font-size: 14px; }
+
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; gap: 16px; }
+      .hero-stats { flex-direction: column; gap: 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .steps { flex-direction: column; align-items: center; }
+      .step-connector { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🧞</span>
+        <span class="logo-text">Prompt<span>Genie</span></span>
+      </div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#models">AI Models</a>
+        <a href="https://promptgenie-v2.pages.dev/" class="btn btn-primary">Try Free</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🧞 V2.5 Engine Active</div>
+      <h1 class="hero-title">
+        Precision Prompt<br><span>Engineering</span>
+      </h1>
+      <p class="hero-subtitle">
+        Transform basic ideas into mathematically optimized, multi-layered AI instructions using the TACNS & Avatar frameworks. Get dramatically better results from any AI model.
+      </p>
+      <div class="hero-buttons">
+        <a href="https://promptgenie-v2.pages.dev/" class="btn btn-primary">Start Optimizing →</a>
+        <a href="#how-it-works" class="btn btn-outline">See How It Works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-value">TACNS</div>
+          <div class="stat-label">Framework</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">5+</div>
+          <div class="stat-label">AI Models</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">10x</div>
+          <div class="stat-label">Better Results</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <div class="container">
+      <div class="demo-card">
+        <div class="demo-header">
+          <span class="demo-icon">🧞</span>
+          <span class="demo-title">Try It Now - It's Free</span>
+        </div>
+        <div class="demo-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Target Audience (Avatar)</label>
+              <input type="text" class="form-input" placeholder="e.g. A skeptical CFO, Creative Writer" disabled>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target AI Model</label>
+              <select class="form-select" disabled>
+                <option>GPT-4, Claude, Gemini & more</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Basic Prompt</label>
+            <input type="text" class="form-input" placeholder="Describe what you want the AI to do..." disabled>
+          </div>
+          <button class="optimize-btn">
+            <span>🧞</span> Optimize My Prompt
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why PromptGenie?</h2>
+        <p>The difference between mediocre AI responses and extraordinary ones is the prompt. We make you a prompt architect.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Avatar Targeting</h3>
+          <p>Define your target audience. The AI responds differently to a skeptical CFO vs. an excited creative writer. We optimize for your specific reader.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧮</div>
+          <h3>Mathematical Optimization</h3>
+          <p>Our TACNS framework applies mathematical precision to prompt structure, maximizing information density and response quality.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Multi-Layered Output</h3>
+          <p>Generate prompts with context, constraints, format specifications, and guardrails all baked in. One prompt, powerful results.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Optimization</h3>
+          <p>No more trial and error. Get production-ready prompts in seconds, not hours of refinement.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Built-in Guardrails</h3>
+          <p>We automatically add safety constraints and ethical guidelines to prevent unwanted outputs.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Model-Specific Tuning</h3>
+          <p>Each AI model responds differently. We optimize prompts specifically for GPT-4, Claude, Gemini, or make them universal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Three steps from basic idea to optimized prompt</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Define Your Audience</h3>
+          <p>Tell us who will read the AI's response - a CEO, developer, teacher, or customer. This shapes the entire prompt.</p>
+        </div>
+        <div class="step-connector">→</div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Share Your Idea</h3>
+          <p>Type your basic prompt in plain English. "Write about climate change" becomes a structured masterpiece.</p>
+        </div>
+        <div class="step-connector">→</div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Optimized Result</h3>
+          <p>Our engine transforms your prompt using TACNS framework. Copy the optimized version and use it with any AI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="models" id="models">
+    <div class="container">
+      <div class="section-header">
+        <h2>Works With All Major AI</h2>
+        <p>Optimized prompts for every model</p>
+      </div>
+      <div class="models-grid">
+        <div class="model-card">
+          <div class="model-icon">🤖</div>
+          <div class="model-name">ChatGPT</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">🧠</div>
+          <div class="model-name">Claude</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">✨</div>
+          <div class="model-name">Gemini</div>
+        </div>
+        <div class="model-card">
+          <div class="model-icon">🌐</div>
+          <div class="model-name">Universal</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Optimize?</h2>
+      <p>Join thousands of prompt engineers getting better AI results.</p>
+      <a href="https://promptgenie-v2.pages.dev/" class="btn btn-primary" style="font-size: 20px; padding: 16px 40px;">Start Free →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 PromptGenie. Powered by TACNS Logic & Gemini 3 Pro.</p>
+    </div>
+  </footer>
+</body>
+</html>
